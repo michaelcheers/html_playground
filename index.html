@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // Check for content in sessionStorage BEFORE anything renders
+        (function() {
+            const savedContent = sessionStorage.getItem('readerContent');
+            if (savedContent) {
+                sessionStorage.removeItem('readerContent');
+                document.open();
+                document.write(savedContent);
+                document.close();
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML Playground</title>
@@ -88,18 +100,6 @@
             display: none;
         }
 
-        .reader-content {
-            display: none;
-            margin-top: 30px;
-            padding: 20px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            line-height: 1.6;
-            font-size: 16px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
     </style>
 </head>
 <body>
@@ -142,33 +142,15 @@
                 Render HTML
             </button>
         </div>
-
-        <div class="reader-content" id="reader-content"></div>
     </div>
 
     <script>
-        // Check for content in sessionStorage on page load - must run first
-        (function() {
-            const savedContent = sessionStorage.getItem('readerContent');
-
-            if (savedContent) {
-                // Clear sessionStorage
-                sessionStorage.removeItem('readerContent');
-
-                // Write the full HTML document
-                document.open();
-                document.write(savedContent);
-                document.close();
-            }
-        })();
-
         const uploadArea = document.getElementById('upload-area');
         const fileInput = document.getElementById('file-input');
         const textInput = document.getElementById('text-input');
         const textSubmit = document.getElementById('text-submit');
         const loading = document.getElementById('loading');
         const error = document.getElementById('error');
-        const readerContent = document.getElementById('reader-content');
 
         // Drag and drop handlers
         uploadArea.addEventListener('dragover', (e) => {
@@ -211,7 +193,6 @@
         async function handleFiles(files) {
             hideError();
             showLoading();
-            readerContent.innerHTML = ''; // Clear previous content
 
             try {
                 const documents = [];
@@ -250,7 +231,6 @@
 
         function showLoading() {
             loading.style.display = 'block';
-            readerContent.style.display = 'none';
         }
 
         function hideLoading() {
@@ -260,7 +240,6 @@
         function showError(message) {
             error.textContent = message;
             error.style.display = 'block';
-            readerContent.style.display = 'none';
         }
 
         function hideError() {
