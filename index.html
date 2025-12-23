@@ -147,6 +147,21 @@
     </div>
 
     <script>
+        // Check for content in sessionStorage on page load - must run first
+        (function() {
+            const savedContent = sessionStorage.getItem('readerContent');
+
+            if (savedContent) {
+                // Clear sessionStorage
+                sessionStorage.removeItem('readerContent');
+
+                // Write the full HTML document
+                document.open();
+                document.write(savedContent);
+                document.close();
+            }
+        })();
+
         const uploadArea = document.getElementById('upload-area');
         const fileInput = document.getElementById('file-input');
         const textInput = document.getElementById('text-input');
@@ -154,26 +169,6 @@
         const loading = document.getElementById('loading');
         const error = document.getElementById('error');
         const readerContent = document.getElementById('reader-content');
-
-        // Check for content in sessionStorage on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedContent = sessionStorage.getItem('readerContent');
-
-            if (savedContent) {
-                // Clear sessionStorage
-                sessionStorage.removeItem('readerContent');
-
-                // Parse the HTML and set head/body
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(savedContent, 'text/html');
-
-                // Replace the head content
-                document.head.innerHTML = doc.head.innerHTML;
-
-                // Replace the body content
-                document.body.innerHTML = doc.body.innerHTML;
-            }
-        });
 
         // Drag and drop handlers
         uploadArea.addEventListener('dragover', (e) => {
