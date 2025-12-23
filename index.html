@@ -7,9 +7,8 @@
             const savedContent = sessionStorage.getItem('readerContent');
             if (savedContent) {
                 sessionStorage.removeItem('readerContent');
-                document.open();
-                document.write(savedContent);
-                document.close();
+                window.stop();
+                document.documentElement.innerHTML = savedContent;
             }
         })();
     </script>
