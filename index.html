@@ -7,14 +7,13 @@
             const savedContent = sessionStorage.getItem('readerContent');
             if (savedContent) {
                 sessionStorage.removeItem('readerContent');
-                window.stop();
                 document.open();
                 document.write(savedContent);
                 document.close();
             }
-        })();
-    </script>
-    <meta charset="UTF-8">
+			else {
+			    document.open();
+				document.write(`<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML Playground</title>
     <style>
@@ -205,7 +204,7 @@
                             documents.push({ name: file.name, html: html });
                         }
                     } else {
-                        console.warn(`Skipping unsupported file type: ${file.name}`);
+                        console.warn(\`Skipping unsupported file type: \${file.name}\`);
                     }
                 }
 
@@ -249,3 +248,8 @@
     </script>
 </body>
 </html>
+`);
+document.close();
+			}
+        })();
+    </script>
